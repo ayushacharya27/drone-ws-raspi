@@ -1,0 +1,21 @@
+[0.546s] Invoking command in '/home/ayush/drone-ws-code/drone_manual': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/ayush/drone-ws-code/build/drone_manual/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ayush/drone-ws-code/install/drone_manual/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/drone_manual build --build-base /home/ayush/drone-ws-code/build/drone_manual/build install --record /home/ayush/drone-ws-code/build/drone_manual/install.log --single-version-externally-managed install_data
+[0.719s] running egg_info
+[0.729s] writing ../build/drone_manual/drone_manual.egg-info/PKG-INFO
+[0.730s] writing dependency_links to ../build/drone_manual/drone_manual.egg-info/dependency_links.txt
+[0.730s] writing entry points to ../build/drone_manual/drone_manual.egg-info/entry_points.txt
+[0.730s] writing requirements to ../build/drone_manual/drone_manual.egg-info/requires.txt
+[0.730s] writing top-level names to ../build/drone_manual/drone_manual.egg-info/top_level.txt
+[0.752s] reading manifest file '../build/drone_manual/drone_manual.egg-info/SOURCES.txt'
+[0.753s] writing manifest file '../build/drone_manual/drone_manual.egg-info/SOURCES.txt'
+[0.753s] running build
+[0.753s] running build_py
+[0.753s] running install
+[0.757s] running install_lib
+[0.768s] running install_data
+[0.769s] running install_egg_info
+[0.780s] removing '/home/ayush/drone-ws-code/install/drone_manual/lib/python3.12/site-packages/drone_manual-0.0.0-py3.12.egg-info' (and everything under it)
+[0.780s] Copying ../build/drone_manual/drone_manual.egg-info to /home/ayush/drone-ws-code/install/drone_manual/lib/python3.12/site-packages/drone_manual-0.0.0-py3.12.egg-info
+[0.781s] running install_scripts
+[0.858s] Installing joy_subscriber script to /home/ayush/drone-ws-code/install/drone_manual/lib/drone_manual
+[0.858s] writing list of installed files to '/home/ayush/drone-ws-code/build/drone_manual/install.log'
+[0.882s] Invoked command in '/home/ayush/drone-ws-code/drone_manual' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/ayush/drone-ws-code/build/drone_manual/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ayush/drone-ws-code/install/drone_manual/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/drone_manual build --build-base /home/ayush/drone-ws-code/build/drone_manual/build install --record /home/ayush/drone-ws-code/build/drone_manual/install.log --single-version-externally-managed install_data

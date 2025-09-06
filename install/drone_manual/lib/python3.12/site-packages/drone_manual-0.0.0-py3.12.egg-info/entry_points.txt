@@ -1,0 +1,2 @@
+[console_scripts]
+joy_subscriber = drone_manual.joy_subscriber:main
