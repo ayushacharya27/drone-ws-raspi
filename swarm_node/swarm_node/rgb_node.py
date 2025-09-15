@@ -4,7 +4,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 
-class CameraPublisherNode(Node):
+class CameraPublisher(Node):
     def __init__(self):
         super().__init__('camera_publisher')
         self.publisher = self.create_publisher(Image, 'camera/image_raw', 10)
@@ -20,7 +20,7 @@ class CameraPublisherNode(Node):
              
 def main(args=None):
     rclpy.init(args=args)
-    node = CameraPublisherNode()
+    node = CameraPublisher()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()

@@ -10,6 +10,7 @@ setup.py
 ../build/swarm_node/swarm_node.egg-info/zip-safe
 resource/swarm_node
 swarm_node/__init__.py
+swarm_node/prerna_node.py
 swarm_node/rgb_node.py
 test/test_copyright.py
 test/test_flake8.py
