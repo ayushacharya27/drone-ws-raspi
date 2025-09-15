@@ -9,7 +9,7 @@ def generate_launch_description():
             name = 'mavros',
             output = 'screen',
             parameters = [{
-                'fcu_url': '/dev/ttyUSB0:57600', # Pixhawk port & baudrate
+                'fcu_url': '/dev/ttyACM0:57600', # Pixhawk port & baudrate
                 'gcs_url': '',
                 'target_system_id': 1,
                 'target_component_id': 1

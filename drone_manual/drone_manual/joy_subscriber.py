@@ -1,92 +1,103 @@
 import rclpy
 from rclpy.node import Node
-from mavros_msgs.srv import CommandBool
-from mavros_msgs.srv import SetMode
+
 from sensor_msgs.msg import Joy
-from mavros_msgs.msg import ManualControl
-
-# Throttle(Up/Down) : Left JoyStick (Up and Down)
-# Left/Right : Nil
-# Forward/Backward : Right JoyStick (Up and Down)
-# Arm/Disarm : Button A
-
+from mavros_msgs.msg import State
+from mavros_msgs.srv import CommandBool, SetMode
 
 
 class JoyNode(Node):
     def __init__(self):
-        super().__init__('joy_node')
+        super().__init__('joy_to_rc_override')
+        self.subscription = self.create_subscription(Joy,'/joy',self.joy_callback,10)
+        self.state_sub = self.create_subscription(State,'/mavros/state',self.state_callback,10)
 
-        self.subscription = self.create_subscription(Joy, "/joy", self.mavlink_callback, 10)
-        self.publisher = self.create_publisher(ManualControl, '/mavros/manual_control/send', 10)
-        self.arm_client = self.create_client(CommandBool, '/mavros/cmd/arming')
-        self.mode_client = self.create_client(SetMode, '/mavros/set_mode')
-        self.armed = 0
-    def mavlink_callback(self , msg: Joy):
-        manual = ManualControl()
-        manual.z = float(msg.axes[1] * 1000)  # Throttle
-        manual.y = float(0)  # Left/Right Was Fukcing Up so Removed it
-        manual.x = float(msg.axes[4] * 1000)  # Forward/Back
+        self.arm_client = self.create_client(CommandBool, '/mavros/cmd/arming') # For Arming
+        self.mode_client = self.create_client(SetMode, '/mavros/set_mode') # For Changing Mode
 
-        manual.r = float(0) # Yaw
+        self.current_state = State()
+        self.last_buttons = []
 
-        self.publisher.publish(manual)
+        self.get_logger().info("Mavros bridge started")
 
-        if msg.buttons[0] == 1:
-            if self.armed == 0 :
-                self.arm_disarm(True)
-                self.armed = 1
-            else:
-                self.arm_disarm(False)
-                self.armed = 0
+    def state_callback(self, msg: State):
+        self.current_state = msg
 
-        if msg.buttons[1] == 1: # Button B
-            self.set_mode("MANUAL")
-        
-        if msg.buttons[3] == 1: # Button Y
-            self.set_mode("STABILIZED")
+    def joy_callback(self, msg: Joy):
+        # Write According to ArduPilot
 
 
-    def arm_disarm(self, arm: bool):
+        # Joel and Me Have to Discuss
 
-        # Just a Precautionary Exercise
+        # Modes Set for ARM/DISARM and Set_Modes
+
+        # To Keep Track of Last Pressed Buttons
+        if not self.last_buttons:
+            self.last_buttons = [0] * len(msg.buttons) # Intial Array [0,0,0] 3 Buttons A, B, Y
+
+        # A button (ARM)
+        if msg.buttons[0] == 1 and self.last_buttons[0] == 0:
+            arm_state = not self.current_state.armed
+            self.get_logger().info(f"{'ARMED' if arm_state else 'DISARMED'}")
+            self.arm_func(arm_state)
+
+        # B button (MANUAL)
+        if msg.buttons[1] == 1 and self.last_buttons[1] == 0:
+            self.get_logger().info("On Manual")
+            self.mode_func("MANUAL")
+
+        # Y button (STABILIZE)
+        if msg.buttons[3] == 1 and self.last_buttons[3] == 0:
+            self.get_logger().info("On Stabilize")
+            self.mode_func("STABILIZE")
+
+        self.last_buttons = msg.buttons
+
+    def arm_func(self, arm: bool):
         if not self.arm_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning('Arm service not available')
+            self.get_logger().warning("Arm/Disarm Service unavailable")
             return
-
+        # For Getting Verification That Command Succesful or not (Not Required)
         req = CommandBool.Request()
         req.value = arm
         future = self.arm_client.call_async(req)
-        rclpy.spin_until_future_complete(self, future)
 
-        if future.result() is not None and future.result().success:
-            self.get_logger().info("Armed Brahh" if arm else "Disarmed Brahh")
-        else:
-            self.get_logger().error("Womp Womp")
+        def done_cb(fut):
+            res = fut.result()
+            if res and res.success:
+                self.get_logger().info(f"{'ARMED' if arm else 'DISARMED'}")
+            else:
+                self.get_logger().warning("Arm/Disarm Failed")
 
-    def set_mode(self, mode: str):
+        future.add_done_callback(done_cb)
+
+    def mode_func(self, mode: str):
         if not self.mode_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning('SetMode service not available')
+            self.get_logger().warning("Service Unavailable")
             return
+
+        # For Getting Verification That Command Succesful or not (Not Required)
         req = SetMode.Request()
         req.custom_mode = mode
         future = self.mode_client.call_async(req)
-        rclpy.spin_until_future_complete(self, future)
-        if future.result() and future.result().mode_sent:
-            self.get_logger().info(f"Sentry Done is on {mode} mode")
-        else:
-            self.get_logger().error(f"Failed to set mode {mode}")
 
+        def done_cb(fut):
+            res = fut.result()
+            if res and res.mode_sent:
+                self.get_logger().info(f"Mode set to {mode}")
+            else:
+                self.get_logger().warning(f"Womp Womp!! {mode}")
 
- 
+        future.add_done_callback(done_cb)
+
 
 def main(args=None):
     rclpy.init(args=args)
-    node = JoyNode() # Creating a Object for Joy Node
+    node = JoyNode()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
-    main()
 
-    
+if __name__ == "__main__":
+    main()
