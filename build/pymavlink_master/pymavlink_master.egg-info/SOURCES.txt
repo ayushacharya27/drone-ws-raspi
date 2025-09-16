@@ -1,0 +1,17 @@
+package.xml
+setup.cfg
+setup.py
+../build/pymavlink_master/pymavlink_master.egg-info/PKG-INFO
+../build/pymavlink_master/pymavlink_master.egg-info/SOURCES.txt
+../build/pymavlink_master/pymavlink_master.egg-info/dependency_links.txt
+../build/pymavlink_master/pymavlink_master.egg-info/entry_points.txt
+../build/pymavlink_master/pymavlink_master.egg-info/requires.txt
+../build/pymavlink_master/pymavlink_master.egg-info/top_level.txt
+../build/pymavlink_master/pymavlink_master.egg-info/zip-safe
+pymavlink_master/__init__.py
+pymavlink_master/master.py
+pymavlink_master/telemetry.py
+resource/pymavlink_master
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
