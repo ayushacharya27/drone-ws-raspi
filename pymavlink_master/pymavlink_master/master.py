@@ -45,6 +45,12 @@ class PymavLinkMaster(Node):
             self.arm()
         if msg.buttons[1] and not self.prev_buttons[1]:
             self.disarm()
+
+
+        # Mode Swtich
+        if msg.buttons[3] and not self.prev_buttons[4]:
+            self.set_mode("STABILIZE")  
+
         
         # Sending Throttle and Forward Command just for now
         self.channel_ary[2] = (msg.axes[1] + 1)*500 + 500 # Throttle
@@ -52,6 +58,12 @@ class PymavLinkMaster(Node):
         self.channel_ary[4] = (msg.axes[3] + 1)*500 + 500 # Forward
 
         self.actuate()
+    
+
+    def set_mode(self, mode: str):
+        mode_id = self.master.mode_mapping()[mode]
+        self.master.set_mode(mode_id)
+        self.get_logger().info("On Stabilize Niggs")
 
 
     def arm(self):
