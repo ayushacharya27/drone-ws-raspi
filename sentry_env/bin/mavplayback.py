@@ -1,4 +1,4 @@
-#!/home/ayush/drone-ws-code/sentry_env/bin/python3
+#!/mnt/Storage/Hackathons/SIH/drone-ws-raspi/sentry_env/bin/python3
 
 '''
 play back a mavlink log as a FlightGear FG NET stream, and as a

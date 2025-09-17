@@ -1,4 +1,0 @@
-[0.000000] (-) TimerEvent: {}
-[0.000282] (-) JobUnselected: {'identifier': 'drone_manual'}
-[0.000391] (-) JobUnselected: {'identifier': 'swarm_node'}
-[0.000414] (-) EventReactorShutdown: {}

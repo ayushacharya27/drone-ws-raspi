@@ -1,4 +1,4 @@
-#!/home/ayush/drone-ws-code/sentry_env/bin/python3
+#!/mnt/Storage/Hackathons/SIH/drone-ws-raspi/sentry_env/bin/python3
 
 '''
 example program to extract GPS data from a mavlink log, and create a GPX

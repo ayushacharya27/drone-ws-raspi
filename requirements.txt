@@ -1,0 +1,5 @@
+# Hardware & Web Communication
+MAVProxy
+pymavlink
+pyserial
+pynmeagps

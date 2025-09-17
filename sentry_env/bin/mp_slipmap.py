@@ -1,4 +1,4 @@
-#!/home/ayush/drone-ws-code/sentry_env/bin/python3
+#!/mnt/Storage/Hackathons/SIH/drone-ws-raspi/sentry_env/bin/python3
 # -*- coding: utf-8 -*-
 '''
 slipmap based on mp_tile

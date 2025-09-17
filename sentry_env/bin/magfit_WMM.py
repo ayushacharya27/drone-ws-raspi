@@ -1,4 +1,4 @@
-#!/home/ayush/drone-ws-code/sentry_env/bin/python3
+#!/mnt/Storage/Hackathons/SIH/drone-ws-raspi/sentry_env/bin/python3
 
 '''
 fit best estimate of magnetometer offsets, diagonals, off-diagonals, cmot and scaling using WMM target

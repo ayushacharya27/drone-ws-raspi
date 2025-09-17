@@ -1,0 +1,12 @@
+#ignore ros builds and logs
+install/
+build/
+log/
+
+#ignore sentry_env
+sentry_env/
+
+#ignore mav files (created by MAVProxy)
+mav.parm
+mav.tlog
+mav.tlog.raw
