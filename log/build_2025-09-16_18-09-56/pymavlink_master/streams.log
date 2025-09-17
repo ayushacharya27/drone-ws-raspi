@@ -1,0 +1,32 @@
+[0.888s] Invoking command in '/home/ayush/drone-ws-code/pymavlink_master': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/ayush/drone-ws-code/build/pymavlink_master/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/pymavlink_master build --build-base /home/ayush/drone-ws-code/build/pymavlink_master/build install --record /home/ayush/drone-ws-code/build/pymavlink_master/install.log --single-version-externally-managed install_data
+[1.047s] running egg_info
+[1.047s] creating ../build/pymavlink_master/pymavlink_master.egg-info
+[1.057s] writing ../build/pymavlink_master/pymavlink_master.egg-info/PKG-INFO
+[1.058s] writing dependency_links to ../build/pymavlink_master/pymavlink_master.egg-info/dependency_links.txt
+[1.058s] writing requirements to ../build/pymavlink_master/pymavlink_master.egg-info/requires.txt
+[1.058s] writing top-level names to ../build/pymavlink_master/pymavlink_master.egg-info/top_level.txt
+[1.058s] writing manifest file '../build/pymavlink_master/pymavlink_master.egg-info/SOURCES.txt'
+[1.079s] reading manifest file '../build/pymavlink_master/pymavlink_master.egg-info/SOURCES.txt'
+[1.079s] writing manifest file '../build/pymavlink_master/pymavlink_master.egg-info/SOURCES.txt'
+[1.079s] running build
+[1.080s] running build_py
+[1.080s] creating /home/ayush/drone-ws-code/build/pymavlink_master/build
+[1.080s] creating /home/ayush/drone-ws-code/build/pymavlink_master/build/lib
+[1.080s] creating /home/ayush/drone-ws-code/build/pymavlink_master/build/lib/pymavlink_master
+[1.080s] copying pymavlink_master/__init__.py -> /home/ayush/drone-ws-code/build/pymavlink_master/build/lib/pymavlink_master
+[1.080s] running install
+[1.084s] running install_lib
+[1.095s] creating /home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages/pymavlink_master
+[1.095s] copying /home/ayush/drone-ws-code/build/pymavlink_master/build/lib/pymavlink_master/__init__.py -> /home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages/pymavlink_master
+[1.096s] byte-compiling /home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages/pymavlink_master/__init__.py to __init__.cpython-312.pyc
+[1.096s] running install_data
+[1.096s] creating /home/ayush/drone-ws-code/install/pymavlink_master/share/ament_index
+[1.096s] creating /home/ayush/drone-ws-code/install/pymavlink_master/share/ament_index/resource_index
+[1.096s] creating /home/ayush/drone-ws-code/install/pymavlink_master/share/ament_index/resource_index/packages
+[1.096s] copying resource/pymavlink_master -> /home/ayush/drone-ws-code/install/pymavlink_master/share/ament_index/resource_index/packages
+[1.097s] copying package.xml -> /home/ayush/drone-ws-code/install/pymavlink_master/share/pymavlink_master
+[1.097s] running install_egg_info
+[1.108s] Copying ../build/pymavlink_master/pymavlink_master.egg-info to /home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages/pymavlink_master-0.0.0-py3.12.egg-info
+[1.108s] running install_scripts
+[1.182s] writing list of installed files to '/home/ayush/drone-ws-code/build/pymavlink_master/install.log'
+[1.207s] Invoked command in '/home/ayush/drone-ws-code/pymavlink_master' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/ayush/drone-ws-code/build/pymavlink_master/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/pymavlink_master build --build-base /home/ayush/drone-ws-code/build/pymavlink_master/build install --record /home/ayush/drone-ws-code/build/pymavlink_master/install.log --single-version-externally-managed install_data

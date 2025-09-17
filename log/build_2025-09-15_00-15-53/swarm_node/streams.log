@@ -1,0 +1,27 @@
+[0.779s] Invoking command in '/home/ayush/drone-ws-code/swarm_node': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/ayush/drone-ws-code/build/swarm_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/swarm_node build --build-base /home/ayush/drone-ws-code/build/swarm_node/build install --record /home/ayush/drone-ws-code/build/swarm_node/install.log --single-version-externally-managed install_data
+[0.951s] running egg_info
+[0.962s] writing ../build/swarm_node/swarm_node.egg-info/PKG-INFO
+[0.962s] writing dependency_links to ../build/swarm_node/swarm_node.egg-info/dependency_links.txt
+[0.962s] writing entry points to ../build/swarm_node/swarm_node.egg-info/entry_points.txt
+[0.962s] writing requirements to ../build/swarm_node/swarm_node.egg-info/requires.txt
+[0.962s] writing top-level names to ../build/swarm_node/swarm_node.egg-info/top_level.txt
+[0.986s] reading manifest file '../build/swarm_node/swarm_node.egg-info/SOURCES.txt'
+[0.986s] writing manifest file '../build/swarm_node/swarm_node.egg-info/SOURCES.txt'
+[0.986s] running build
+[0.986s] running build_py
+[0.986s] copying swarm_node/rgb_node.py -> /home/ayush/drone-ws-code/build/swarm_node/build/lib/swarm_node
+[0.986s] copying swarm_node/prerna_node.py -> /home/ayush/drone-ws-code/build/swarm_node/build/lib/swarm_node
+[0.987s] running install
+[0.991s] running install_lib
+[1.003s] copying /home/ayush/drone-ws-code/build/swarm_node/build/lib/swarm_node/rgb_node.py -> /home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages/swarm_node
+[1.003s] copying /home/ayush/drone-ws-code/build/swarm_node/build/lib/swarm_node/prerna_node.py -> /home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages/swarm_node
+[1.003s] byte-compiling /home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages/swarm_node/rgb_node.py to rgb_node.cpython-312.pyc
+[1.003s] byte-compiling /home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages/swarm_node/prerna_node.py to prerna_node.cpython-312.pyc
+[1.004s] running install_data
+[1.004s] running install_egg_info
+[1.015s] removing '/home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages/swarm_node-0.0.0-py3.12.egg-info' (and everything under it)
+[1.015s] Copying ../build/swarm_node/swarm_node.egg-info to /home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages/swarm_node-0.0.0-py3.12.egg-info
+[1.016s] running install_scripts
+[1.085s] Installing rgb_node script to /home/ayush/drone-ws-code/install/swarm_node/lib/swarm_node
+[1.085s] writing list of installed files to '/home/ayush/drone-ws-code/build/swarm_node/install.log'
+[1.117s] Invoked command in '/home/ayush/drone-ws-code/swarm_node' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/ayush/drone-ws-code/build/swarm_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ayush/drone-ws-code/install/swarm_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/swarm_node build --build-base /home/ayush/drone-ws-code/build/swarm_node/build install --record /home/ayush/drone-ws-code/build/swarm_node/install.log --single-version-externally-managed install_data

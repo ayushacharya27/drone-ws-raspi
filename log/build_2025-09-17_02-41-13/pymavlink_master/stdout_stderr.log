@@ -1,0 +1,19 @@
+running egg_info
+writing ../build/pymavlink_master/pymavlink_master.egg-info/PKG-INFO
+writing dependency_links to ../build/pymavlink_master/pymavlink_master.egg-info/dependency_links.txt
+writing entry points to ../build/pymavlink_master/pymavlink_master.egg-info/entry_points.txt
+writing requirements to ../build/pymavlink_master/pymavlink_master.egg-info/requires.txt
+writing top-level names to ../build/pymavlink_master/pymavlink_master.egg-info/top_level.txt
+reading manifest file '../build/pymavlink_master/pymavlink_master.egg-info/SOURCES.txt'
+writing manifest file '../build/pymavlink_master/pymavlink_master.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+running install_egg_info
+removing '/home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages/pymavlink_master-0.0.0-py3.12.egg-info' (and everything under it)
+Copying ../build/pymavlink_master/pymavlink_master.egg-info to /home/ayush/drone-ws-code/install/pymavlink_master/lib/python3.12/site-packages/pymavlink_master-0.0.0-py3.12.egg-info
+running install_scripts
+Installing start_link script to /home/ayush/drone-ws-code/install/pymavlink_master/lib/pymavlink_master
+writing list of installed files to '/home/ayush/drone-ws-code/build/pymavlink_master/install.log'
