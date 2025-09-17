@@ -1,2 +1,0 @@
-[console_scripts]
-rgb_node = swarm_node.rgb_node:main
