@@ -3,3 +3,4 @@ MAVProxy
 pymavlink
 pyserial
 pynmeagps
+future
