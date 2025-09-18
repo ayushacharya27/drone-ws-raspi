@@ -75,6 +75,8 @@ class Survey(Node):
             self.generate_waypoints()
             self.mission()
             self.upload_mission()
+        
+        self.prev_buttons = list(msg.buttons)
 
 
     def auto_mode(self):
