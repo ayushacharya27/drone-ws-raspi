@@ -37,7 +37,7 @@ class Survey(Node):
         self.master.wait_heartbeat()
         self.get_logger().info(f"Connected to Pixhawk {self.master.target_system}")
         
-        self.prev_buttons = [] # I don't know how
+        self.prev_buttons = []
         self.survey_area = []
 
         self.first_point = self.node_at_least_distance()
@@ -76,7 +76,7 @@ class Survey(Node):
             self.mission()
             self.upload_mission()
         
-        self.prev_buttons = list(msg.buttons)
+        self.prev_buttons = list(msg.buttons).copy()
 
 
     def auto_mode(self):
