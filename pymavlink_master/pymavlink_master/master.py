@@ -27,6 +27,9 @@ class PymavLinkMaster(Node):
         7. Servo1 (Not Required)
         8. Servo2 (Not Required)
         '''
+        self.arm_button = 0
+        self.disarm_button = 1
+        self.stabilize_button = 3
 
         self.prev_buttons = []
 
@@ -37,19 +40,24 @@ class PymavLinkMaster(Node):
         '''
         A -> Arm (Button 0)
         B -> Disarm (Button 1)
-        Y -> Stabilize (Button 4)
+        Y -> Stabilize (Button 3)
         '''
 
         # Arming and Disarming
-        if msg.buttons[0] and not self.prev_buttons[0]:
+        if msg.buttons[self.arm_button] and not self.prev_buttons[self.arm_button]: # A
             self.arm()
-        if msg.buttons[1] and not self.prev_buttons[1]:
+            self.prev_buttons[self.arm_button] = 1
+        if msg.buttons[self.disarm_button] and not self.prev_buttons[self.disarm_button]: # B
             self.disarm()
+            self.prev_buttons[self.disarm_button] = 1
 
 
         # Mode Swtich
-        if msg.buttons[3] and not self.prev_buttons[4]:
-            self.set_mode("STABILIZE")  
+        if msg.buttons[self.stabilize_button] and not self.prev_buttons[self.stabilize_button]:
+            self.set_mode("STABILIZE")
+            self.prev_buttons[self.stabilize_button] = 1
+
+        self.prev_buttons = msg.buttons.copy()
 
         
         # Sending Throttle and Forward Command just for now
