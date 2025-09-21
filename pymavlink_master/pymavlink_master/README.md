@@ -11,3 +11,10 @@ DISARM_DELAY = 127
 FS_THR_ENABLE = 0
 ARMING_CHECK = 0
 ```
+
+## Running Nodes
+```bash
+ros2 run pymavlink_mastetr start_link
+
+ros2 run pymavlink_master telemetry_node
+```
