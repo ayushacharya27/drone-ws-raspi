@@ -54,6 +54,8 @@ class PymavLinkMaster(Node):
 
         # Mode Swtich
         if msg.buttons[self.stabilize_button] and not self.prev_buttons[self.stabilize_button]:
+            self.master.mav.mission_clear_all_send(self.master.target_system, self.master.target_component)
+            self.master.recv_match(type='MISSION_ACK', blocking=True)
             self.set_mode("STABILIZE")
             #self.prev_buttons[self.stabilize_button] = 1
 

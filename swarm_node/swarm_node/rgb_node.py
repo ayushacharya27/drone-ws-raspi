@@ -9,7 +9,7 @@ class CameraPublisher(Node):
         super().__init__('camera_publisher')
         self.publisher = self.create_publisher(Image, 'camera/image_raw', 10)
         self.timer = self.create_timer(0.1, self.timer_callback)  # 10 Hz
-        self.capture = cv2.VideoCapture(0) # Will add ID after selecting camera
+        self.capture = cv2.VideoCapture(1) # Will add ID after selecting camera
         self.bridge = CvBridge()
 
     def timer_callback(self):
