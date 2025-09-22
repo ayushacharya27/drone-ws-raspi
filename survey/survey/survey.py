@@ -87,7 +87,7 @@ class Survey(Node):
 
     def survey_define(self):
         with open("details.json", "w") as file:
-            self.waypoints = json.loads(file)
+            self.survey_area = json.loads(file)
 
     def node_at_least_distance(self):
         for i in len(self.survey_area):
