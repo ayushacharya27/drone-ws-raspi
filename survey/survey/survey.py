@@ -6,6 +6,7 @@ from pymavlink.mavutil import mavlink
 import math
 import geopy
 import geopy.distance
+import json
 
 # Define flight and camera parameters
 flight_altitude_m = 50.0  # in meters
@@ -85,7 +86,8 @@ class Survey(Node):
         self.get_logger().info("In AUTO Mode")
 
     def survey_define(self):
-        pass
+        with open("details.json", "w") as file:
+            self.waypoints = json.loads(file)
 
     def node_at_least_distance(self):
         for i in len(self.survey_area):
