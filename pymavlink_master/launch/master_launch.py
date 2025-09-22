@@ -1,0 +1,27 @@
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from launch.actions import ExecuteProcess
+
+def generate_launch_description():
+    return LaunchDescription([
+        ExecuteProcess(
+            cmd=[
+                'mavproxy.py',
+                '--master=/dev/ttyACM0',
+                '--baudrate=11520',
+                '--out=udp:127.0.0.1:14550',
+                '--out=udp:127.0.0.1:14551',
+                '--out=udp:127.0.0.1:14552',
+                ],
+            output='screen'
+        ),
+
+        Node(
+            package='pymavlink_master',
+            executable='start_link',
+            name = 'start_link',
+            output = 'screen',
+        ),
+
+        
+    ])
