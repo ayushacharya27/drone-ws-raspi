@@ -75,5 +75,5 @@ with col1:
         unsafe_allow_html=True,)
 
 with col2:
-    if st.button("📥 Send"):
+    if st.button("Send"):
         export(output)
