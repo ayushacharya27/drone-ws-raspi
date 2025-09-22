@@ -6,6 +6,7 @@ from pymavlink.mavutil import mavlink
 import math
 import geopy
 import geopy.distance
+import json
 
 # Define flight and camera parameters
 flight_altitude_m = 50.0  # in meters
@@ -37,7 +38,7 @@ class Survey(Node):
         self.master.wait_heartbeat()
         self.get_logger().info(f"Connected to Pixhawk {self.master.target_system}")
         
-        self.prev_buttons = [] # I don't know how
+        self.prev_buttons = []
         self.survey_area = []
 
         self.first_point = self.node_at_least_distance()
@@ -76,7 +77,7 @@ class Survey(Node):
             self.mission()
             self.upload_mission()
         
-        self.prev_buttons = list(msg.buttons)
+        self.prev_buttons = list(msg.buttons).copy()
 
 
     def auto_mode(self):
@@ -85,7 +86,8 @@ class Survey(Node):
         self.get_logger().info("In AUTO Mode")
 
     def survey_define(self):
-        pass
+        with open("details.json", "w") as file:
+            self.survey_area = json.loads(file)
 
     def node_at_least_distance(self):
         for i in range(len(self.survey_area)):
