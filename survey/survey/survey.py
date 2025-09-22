@@ -88,7 +88,7 @@ class Survey(Node):
         pass
 
     def node_at_least_distance(self):
-        for i in len(self.survey_area):
+        for i in range(len(self.survey_area)):
             distance = geopy.distance.distance(tuple(current_pos), self.survey_area[i])
             distances_from_current.append((distance,i))
         return(min(distances_from_current)[1])

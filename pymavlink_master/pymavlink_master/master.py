@@ -63,7 +63,7 @@ class PymavLinkMaster(Node):
         # Sending Throttle and Forward Command just for now
         self.channel_ary[2] = (msg.axes[1] + 1)*500 + 500 # Throttle
         #self.channel_ary[2] = 1600 # Dummy Throttle
-        #self.channel_ary[4] = (msg.axes[3] + 1)*500 + 500 # Forward
+        self.channel_ary[4] = (msg.axes[3] + 1)*500 + 500 # Forward
 
         self.actuate()
     

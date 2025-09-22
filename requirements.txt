@@ -4,3 +4,7 @@ pymavlink
 pyserial
 pynmeagps
 future
+geopy
+streamlit
+folium
+streamlit-folium
