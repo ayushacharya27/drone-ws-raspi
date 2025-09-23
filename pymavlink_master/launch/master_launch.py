@@ -7,7 +7,7 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=[
                 'mavproxy.py',
-                '--master=/dev/ttyACM0',
+                '--master=/dev/pixhawk',
                 '--baudrate=11520',
                 '--out=udp:127.0.0.1:14550',
                 '--out=udp:127.0.0.1:14551',

@@ -6,7 +6,7 @@ import cv2
 class CameraPublisher(Node):
     def __init__(self):
         super().__init__('camera_publisher')
-        self.publisher = self.create_publisher(CompressedImage, 'camera/image_raw/compressed', 10)
+        self.publisher = self.create_publisher(CompressedImage, 'camera/image_raw', 10)
         self.timer = self.create_timer(0.1, self.timer_callback)  # 10 Hz
         self.capture = cv2.VideoCapture(0)  
 
@@ -14,7 +14,9 @@ class CameraPublisher(Node):
         ret, frame = self.capture.read()
         if ret:
             # Compress frame as JPEG
-            _, encoded_img = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
+            frame = cv2.resize(frame, (640, 480))  # downscale
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            _, encoded_img = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 30])
             
             msg = CompressedImage()
             msg.header.stamp = self.get_clock().now().to_msg()

@@ -29,7 +29,7 @@ class PymavLinkMaster(Node):
         '''
         self.arm_button = 0
         self.disarm_button = 1
-        self.stabilize_button = 4
+        self.stabilize_button = 3
 
         self.prev_buttons = []
 
@@ -63,9 +63,9 @@ class PymavLinkMaster(Node):
 
         
         # Sending Throttle and Forward Command just for now
-        self.channel_ary[2] = (msg.axes[1] + 1)*500 + 500 # Throttle
+        self.channel_ary[2] = (msg.axes[1]*2 + 1)*500 + 500 # Throttle
         #self.channel_ary[2] = 1600 # Dummy Throttle
-        self.channel_ary[4] = (msg.axes[3] + 1)*500 + 500 # Forward
+        self.channel_ary[4] = (msg.axes[3]*2 + 1)*500 + 500 # Forward
 
         self.actuate()
     

@@ -10,6 +10,12 @@ def generate_launch_description():
             name = 'rgb_node',
             output = 'screen',
         ),
+        Node(
+            package='swarm_node',
+            executable='param_node',
+            name = 'param_node',
+            output = 'screen',
+        ),
 
         
     ])
