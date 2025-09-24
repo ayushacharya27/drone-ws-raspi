@@ -7,6 +7,7 @@ import math
 import geopy
 import geopy.distance
 import json
+import os
 
 # Define flight and camera parameters
 flight_altitude_m = 50.0  # in meters
@@ -28,7 +29,7 @@ trigger_spacing = footprint_height * (1 - (frontlap_percent / 100.0)) # how ofte
 
 
 current_pos = [12.8713, 80.2221] # get value
-distances_from_current = []
+
 
 class Survey(Node):
     def __init__(self, port = "udp:127.0.0.1:14552"):
@@ -40,7 +41,8 @@ class Survey(Node):
         
         self.prev_buttons = []
         self.survey_area = []
-
+        self.distances_from_current = []
+        self.survey_define()
         self.first_point = self.node_at_least_distance()
         self.second_point = self.longer_side()[0]
         self.third_point = self.longer_side()[1]
@@ -50,11 +52,12 @@ class Survey(Node):
         self.forward = self.calculate_bearing(self.survey_area[self.first_point], self.survey_area[self.third_point])
         self.bearing = [self.forward, self.zig, self.zag]
 
-        self.long_side = geopy.distance.distance(self.survey_area[self.first_point], self.survey_area[self.second_point])
-        self.short_side = geopy.distance.distance(self.survey_area[self.first_point], self.survey_area[self.third_point])
+        self.long_side = geopy.distance.distance(self.survey_area[self.first_point], self.survey_area[self.second_point]).meters
+        self.short_side = geopy.distance.distance(self.survey_area[self.first_point], self.survey_area[self.third_point]).meters
         self.total_dist = 0
 
         self.waypoints = []
+       
 
         self.sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
 
@@ -70,14 +73,13 @@ class Survey(Node):
         '''
 
         # Set AUTO Mode and Survey
-        if msg.buttons[2] and not self.prev_buttons[2]:
+        if msg.buttons[3] and not self.prev_buttons[3]:
             self.auto_mode()
             self.survey_define()
             self.generate_waypoints()
-            self.mission()
-            self.upload_mission()
+            self.upload_mission(self.mission())
         
-        self.prev_buttons = list(msg.buttons).copy()
+ 
 
 
     def auto_mode(self):
@@ -86,14 +88,16 @@ class Survey(Node):
         self.get_logger().info("In AUTO Mode")
 
     def survey_define(self):
-        with open("details.json", "w") as file:
-            self.survey_area = json.loads(file)
+        path = r"/mnt/Storage/Hackathons/SIH/drone-ws-raspi/survey/survey/details.json"
+
+        with open(path, "r") as file:
+            self.survey_area = json.load(file)
 
     def node_at_least_distance(self):
         for i in range(len(self.survey_area)):
             distance = geopy.distance.distance(tuple(current_pos), self.survey_area[i])
-            distances_from_current.append((distance,i))
-        return(min(distances_from_current)[1])
+            self.distances_from_current.append((distance,i))
+        return(min(list(self.distances_from_current))[1])
 
     # returns [longer,shorter] node
     def longer_side(self):
@@ -199,9 +203,7 @@ class Survey(Node):
             mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH, 0, 1, 0, 0, 0, 0, 0, 0, 0))
         seq += 1
 
-        # upload mission
-        if self.upload_mission(mission_items):
-            print("Mission is ready on the vehicle.")
+        return mission_items
 
     # Security Reasons
     def destroy_node(self):

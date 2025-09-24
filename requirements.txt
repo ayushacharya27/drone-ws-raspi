@@ -8,3 +8,4 @@ geopy
 streamlit
 folium
 streamlit-folium
+geocoder
