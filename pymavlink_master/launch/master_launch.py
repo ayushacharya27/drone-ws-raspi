@@ -29,6 +29,12 @@ def generate_launch_description():
             name = 'start_link',
             output = 'screen',
         ),
+        Node(
+            package='survey',
+            executable='survey',
+            name = 'survey',
+            output = 'screen',
+        ),
 
         
     ])

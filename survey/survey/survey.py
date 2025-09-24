@@ -73,12 +73,11 @@ class Survey(Node):
         '''
 
         # Set AUTO Mode and Survey
-        if msg.buttons[3] and not self.prev_buttons[3]:
+        if msg.buttons[2] and not self.prev_buttons[2]:
             self.auto_mode()
             self.survey_define()
             self.generate_waypoints()
-            self.mission()
-            #self.upload_mission(self.waypoints)
+            self.upload_mission(self.mission())
         
  
 
@@ -89,7 +88,7 @@ class Survey(Node):
         self.get_logger().info("In AUTO Mode")
 
     def survey_define(self):
-        path = r"/home/ayush/drone-ws-code/survey/survey/details.json"
+        path = r"/mnt/Storage/Hackathons/SIH/drone-ws-raspi/survey/survey/details.json"
 
         with open(path, "r") as file:
             self.survey_area = json.load(file)
@@ -204,9 +203,7 @@ class Survey(Node):
             mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH, 0, 1, 0, 0, 0, 0, 0, 0, 0))
         seq += 1
 
-        # upload mission
-        if self.upload_mission(mission_items):
-            print("Mission is ready on the vehicle.")
+        return mission_items
 
     # Security Reasons
     def destroy_node(self):
