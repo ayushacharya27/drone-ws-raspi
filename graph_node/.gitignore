@@ -3,3 +3,4 @@
 model/__pycache__/
 preprocessing/__pycache__/
 training/__pycache__/
+.DS_Store
