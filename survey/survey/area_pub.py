@@ -4,6 +4,7 @@ from std_msgs.msg import Float32MultiArray
 import rclpy
 from rclpy.node import Node
 import json
+import os
 
 class Survey(Node):
     def __init__(self):

@@ -23,6 +23,7 @@ setup(
         'console_scripts': [
             'survey = survey.survey:main',
             'survey_service = survey.survey_service:main',
+            'area_pub = survey.area_pub:main',
         ],
     },
 )
