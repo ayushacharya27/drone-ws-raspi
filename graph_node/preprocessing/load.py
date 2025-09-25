@@ -4,7 +4,7 @@ import numpy as np
 
 def load_node_features(nodes_features_csv_path: str):
     """
-    Inputs: node feature CSV into feature matrix and node list
+    Args: node feature CSV into feature matrix and node list
     Returns:
         nodes: GPS node ID list
         features: numpy array [num_nodes, num_features]
@@ -20,7 +20,7 @@ def load_node_features(nodes_features_csv_path: str):
 
 def load_adjacency_matrix(adj_csv_path: str):
     """
-    Inputs: adjacency matrix from CSV into numpy array
+    Args: adjacency matrix from CSV into numpy array
     Returns:
         adj_matrix: numpy array [num_nodes, num_nodes]
         nodes: GPS node ID list

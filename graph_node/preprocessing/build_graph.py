@@ -6,7 +6,7 @@ import numpy as np
 
 def build_nx_graph(nodes, features, adj_matrix):
     """
-    Inputs:
+    Args:
         nodes: GPS node ID list
         features: numpy array [num_nodes, num_features]
         adj_matrix: numpy array [num_nodes, num_nodes]
@@ -18,21 +18,21 @@ def build_nx_graph(nodes, features, adj_matrix):
     num_nodes = len(nodes)
 
     for i in range(num_nodes):
-        node = nodes[i]
-        G.add_node(node, features=features[i])
+        # Use integer `i` for the node and store the "lat_long" ID as an attribute
+        G.add_node(i, id=nodes[i], features=features[i])
 
     for i in range(num_nodes):
         for j in range(i+1, num_nodes):
             if adj_matrix[i, j] == 1:
-                G.add_edge(nodes[i], nodes[j])
-                G.add_edge(nodes[j], nodes[i])
+                G.add_edge(i, j)
+                # G.add_edge(j, i)
 
     return G
 
 
 def build_pyg_graph(nodes, features, adj_matrix):
     """
-    Inputs:
+    Args:
         nodes: GPS node ID list
         features: numpy array [num_nodes, num_features]
         adj_matrix: numpy array [num_nodes, num_nodes]
@@ -43,7 +43,7 @@ def build_pyg_graph(nodes, features, adj_matrix):
 
     # row, col = np.where(np.triu(adj_matrix, k=1) == 1)  # only upper triangle: directed
     row, col = np.where(adj_matrix == 1)  # both directions: (i, j) and (j, i)
-    edge_index = np.vstack((row, col))  # shape: [2, num_edges]
+    edge_index = np.vstack((row, col))  # shape: COO format [2, num_edges]
     edge_index = torch.tensor(edge_index, dtype=torch.long)
 
     data = Data(x=x, edge_index=edge_index)
@@ -53,23 +53,42 @@ def build_pyg_graph(nodes, features, adj_matrix):
 
     return data
 
-def compute_dijkstra_paths(G, source_node):
-    """
-    Runs Dijkstra on a NetworkX graph with node attribute 'features' (assumed 2nd column = distance_from_start)
-    Inputs:
-        G (nx.Graph)
-        source_node (str): starting GPS node
+# def compute_dijkstra_paths(G, source_node):
+#     """
+#     Runs Dijkstra on a NetworkX graph with node attribute 'features' (assumed 2nd column = distance_from_start).
+#     Args:
+#         G (nx.Graph)
+#         source_node (str): starting GPS node
+#     Returns:
+#         dict: shortest path lengths
+#         dict: actual shortest paths
+#     """
+#     # Extract edge weights: here we assume 'distance_from_start' is in features[:,1]
+#     # NOTE: Each edge gets weight based on avg of the two connected node distances.
+#     for u, v in G.edges():
+#         dist_u = G.nodes[u]['features'][1]  # distance_from_start feature
+#         dist_v = G.nodes[v]['features'][1]
+#         G[u][v]['weight'] = (dist_u + dist_v) / 2
 
+#     lengths, paths = nx.single_source_dijkstra(G, source=source_node, weight='weight')
+#     return lengths, paths
+
+def compute_dijkstra_paths(G: nx.Graph, source_node_idx: int):
+    """
+    Runs Dijkstra on a NetworkX graph.
+    Args:
+        G (nx.Graph): A graph with integer nodes.
+        source_node_idx (int): The integer index of the starting node.
     Returns:
         dict: shortest path lengths
         dict: actual shortest paths
     """
-    # Extract edge weights: here we assume 'distance_from_start' is in features[:,1]
-    # NOTE: Each edge gets weight based on avg of the two connected node distances.
     for u, v in G.edges():
-        dist_u = G.nodes[u]['features'][1]  # distance_from_start feature
+        # This part works correctly as u and v are integers
+        dist_u = G.nodes[u]['features'][1]
         dist_v = G.nodes[v]['features'][1]
         G[u][v]['weight'] = (dist_u + dist_v) / 2
 
-    lengths, paths = nx.single_source_dijkstra(G, source=source_node, weight='weight')
+    # The `source` uses the integer index
+    lengths, paths = nx.single_source_dijkstra(G, source=source_node_idx, weight='weight')
     return lengths, paths

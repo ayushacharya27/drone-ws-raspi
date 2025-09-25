@@ -1,0 +1,5 @@
+.ipynb_checkpoints/
+/__pycache__/
+model/__pycache__/
+preprocessing/__pycache__/
+training/__pycache__/
