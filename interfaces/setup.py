@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'survey'
+package_name = 'interfaces'
 
 setup(
     name=package_name,
@@ -10,19 +10,16 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/launch.py'])
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='joel',
     maintainer_email='joeldantiv@gmail.com',
     description='TODO: Package description',
-    license='Apache-2.0',
+    license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'survey = survey.survey:main',
-            'survey_service = survey.survey_service:main',
         ],
     },
 )
