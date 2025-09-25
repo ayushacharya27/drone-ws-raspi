@@ -1,6 +1,9 @@
+from interfaces.srv import Area
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Joy
+from std_msgs.msg import Float32MultiArray
 from pymavlink import mavutil
 from pymavlink.mavutil import mavlink
 import math
@@ -60,6 +63,12 @@ class Survey(Node):
        
 
         self.sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
+        self.area_sub = self.create_subscription(Float32MultiArray, 'area_pub', self.survey_define)
+
+        self.area_client = self.create_client(Area, 'area')
+        while not self.cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Service not available, waiting...')
+        self.req = Area.Request()
 
     def joy_callback(self, msg:Joy):
         if not self.prev_buttons:
@@ -75,18 +84,22 @@ class Survey(Node):
         # Set AUTO Mode and Survey
         if msg.buttons[2] and not self.prev_buttons[2]:
             self.auto_mode()
-            self.survey_define()
             self.generate_waypoints()
             self.upload_mission(self.mission())
         
- 
-
-
     def auto_mode(self):
         mode_id = self.master.mode_mapping()["AUTO"]
         self.master.set_mode(mode_id)
         self.get_logger().info("In AUTO Mode")
 
+    def survey_define(self, msg):
+        self.survey_area = msg.data
+
+    def send_request(self):
+            self.future = self.cli.call_async(self.req)
+            rclpy.spin_until_future_complete(self, self.future)
+            return self.future.result()
+          
     def survey_define(self):
         path = r"/home/sentry/drone-ws-raspi/survey/survey/details.json"
 
