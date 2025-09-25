@@ -10,6 +10,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', ['launch/hover_launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,7 +21,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'rgb_node = swarm_node.rgb_node:main'
+            'rgb_node = swarm_node.rgb_node:main',
+            'view_image = swarm_node.frame_check:main',
+            'param_node = swarm_node.prerna_node:main'
         ],
     },
 )

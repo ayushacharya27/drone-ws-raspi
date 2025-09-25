@@ -54,6 +54,8 @@ class PymavLinkMaster(Node):
 
         # Mode Swtich
         if msg.buttons[self.stabilize_button] and not self.prev_buttons[self.stabilize_button]:
+            self.master.mav.mission_clear_all_send(self.master.target_system, self.master.target_component)
+            self.master.recv_match(type='MISSION_ACK', blocking=True)
             self.set_mode("STABILIZE")
             #self.prev_buttons[self.stabilize_button] = 1
 
@@ -61,9 +63,9 @@ class PymavLinkMaster(Node):
 
         
         # Sending Throttle and Forward Command just for now
-        self.channel_ary[2] = (msg.axes[1] + 1)*500 + 500 # Throttle
+        self.channel_ary[2] = (msg.axes[1]*2 + 1)*500 + 500 # Throttle
         #self.channel_ary[2] = 1600 # Dummy Throttle
-        self.channel_ary[4] = (msg.axes[3] + 1)*500 + 500 # Forward
+        self.channel_ary[4] = (msg.axes[3]*2 + 1)*500 + 500 # Forward
 
         self.actuate()
     
