@@ -16,7 +16,7 @@ class PixhawkTelemetry(Node):
         self.yaw_pub = self.create_publisher(Float32MultiArray, 'imu_yaw', 10) # [yaw]
         self.acc_pub = self.create_publisher(Float32MultiArray, 'imu_acc', 10) # [accx,accy,accz]
 
-        self.drone_data = self.create_publisher(String, 'drone_data', 10) # complete drone data
+        self.drone_data = self.create_publisher(String, 'tel_data', 10) # complete drone data
 
         # MAVLink connection
         self.master = mavutil.mavlink_connection(udp_port)
@@ -70,11 +70,7 @@ class PixhawkTelemetry(Node):
             self.acc_pub.publish(accel)
 
         data = [gps_data, accel]
-
-        with open(path,"w") as file:
-            json.dump(data, file)
-        
-
+        self.drone_data.publish(data)
 
 def main(args=None):
     rclpy.init(args=args)

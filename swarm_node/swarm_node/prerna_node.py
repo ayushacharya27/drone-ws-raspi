@@ -36,12 +36,12 @@ class ParamsNode(Node):
         # All Four Parameters
         self.sub_image = self.create_subscription(CompressedImage, 'camera/image_raw', self.ParamsCamera, 10)
         #self.sub_temp = self.create_subscription(Int32, 'tcam/temp_data', self.TempCallback, 10)
-        self.sub_sound = self.create_subscription(Int32, 'sound/compressed', self.ParamsSound, 10)
+        self.sub_sound = self.create_subscription(Int32, 'human_voice', self.ParamsSound, 10)
 
         # Array as a Publisher for GNN Node
         self.final_array = [0, 0, 0, 0]
-        #self.publisher = self.create_publisher(Float32MultiArray, 'params/param_data', 10)
-
+        self.publisher = self.create_publisher(Float32MultiArray, 'drone_data', 10)
+        
         #self.bridge = CvBridge()
         self.model = YOLO("/home/ayush/drone-ws-code/swarm_node/swarm_node/best.pt")
 
@@ -68,8 +68,11 @@ class ParamsNode(Node):
         #annotated_frame = results[0].plot()
 
         self.final_array[0] = count # Dummy Value
-
         
+        msg = Float32MultiArray()
+        msg.data = self.final_array
+        self.publisher.publish(msg)
+
         cv2.imshow("YOLO detections", detect_frame)
         cv2.waitKey(1)
 
@@ -86,6 +89,9 @@ class ParamsNode(Node):
     def ParamsSound(self, msg: Int32):
         # Fourier Analysis {add to final_array[3]}
         self.final_array[3] = msg.data # Dummy Value
+        gsm = Float32MultiArray()
+        gsm.data = self.final_array
+        self.publisher.publish(gsm)
     
 
 
@@ -115,26 +121,9 @@ class ParamsNode(Node):
         msg1 =  np.clip(probability, 0.0, 1.0)
         self.final_array[1] = msg1
 
-
-
-        
-
-
-
-
-
-
-
-
-    # For Publishing Final Array
-    '''def pub_arr(self):
-        msg = Int32MultiArray()
+        msg = Float32MultiArray()
         msg.data = self.final_array
-        self.publisher.publish(msg)'''
-    
-    
-        
-
+        self.publisher.publish(msg) 
 
 
 def main(args=None):

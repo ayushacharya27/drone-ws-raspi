@@ -21,7 +21,7 @@ class SoundScore(Node):
         # Subscribe to published audio chunks
         self.subscription = self.create_subscription(
             Int32MultiArray,
-            '/sound/compressed',
+            'human_voice',
             self.score_func,
             10
         )

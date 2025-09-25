@@ -7,7 +7,7 @@ import numpy as np
 class SoundPublisher(Node):
     def __init__(self):
         super().__init__('sound_publisher')
-        self.publisher_ = self.create_publisher(Int32MultiArray, '/sound/compressed', 10)
+        self.publisher_ = self.create_publisher(Int32MultiArray, 'human_voice', 10)
         self.samplerate = 16000  # 16 kHz
         self.duration = 5.0       # 1 second chunks
         self.timer = self.create_timer(self.duration, self.publish_sound)
