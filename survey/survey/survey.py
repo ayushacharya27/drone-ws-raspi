@@ -88,7 +88,7 @@ class Survey(Node):
         self.get_logger().info("In AUTO Mode")
 
     def survey_define(self):
-        path = r"/mnt/Storage/Hackathons/SIH/drone-ws-raspi/survey/survey/details.json"
+        path = r"/home/sentry/drone-ws-raspi/survey/survey/details.json"
 
         with open(path, "r") as file:
             self.survey_area = json.load(file)

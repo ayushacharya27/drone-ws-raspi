@@ -9,7 +9,7 @@ class CompressedCamSubscriber(Node):
         super().__init__('compressed_cam_sub')
         self.subscription = self.create_subscription(
             CompressedImage,
-            '/camera/image_raw/compressed',  # your topic
+            '/camera/image_raw',  # your topic
             self.listener_callback,
             10)
     

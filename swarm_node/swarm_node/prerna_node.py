@@ -6,8 +6,10 @@ from sensor_msgs.msg import CompressedImage
 from cv_bridge import CvBridge
 import cv2
 from ultralytics import YOLO
-from std_msgs.msg import Int32MultiArray
+from std_msgs.msg import Float32MultiArray
 from std_msgs.msg import Int32 # For the Time Being this array we will be sending
+
+MAX_COUNT_FOR_PROBABILITY = 50000
 
 # This Node is to Run 
 
@@ -34,11 +36,11 @@ class ParamsNode(Node):
         # All Four Parameters
         self.sub_image = self.create_subscription(CompressedImage, 'camera/image_raw', self.ParamsCamera, 10)
         #self.sub_temp = self.create_subscription(Int32, 'tcam/temp_data', self.TempCallback, 10)
-        #self.sub_sound = self.create_subscription(AudioData, 'mic/mic_data', self.ParamsSound, 10)
+        self.sub_sound = self.create_subscription(Int32, 'sound/compressed', self.ParamsSound, 10)
 
         # Array as a Publisher for GNN Node
         self.final_array = [0, 0, 0, 0]
-        #self.publisher = self.create_publisher(Int32MultiArray, 'params/param_data', 10)
+        #self.publisher = self.create_publisher(Float32MultiArray, 'params/param_data', 10)
 
         #self.bridge = CvBridge()
         self.model = YOLO("/home/ayush/drone-ws-code/swarm_node/swarm_node/best.pt")
@@ -55,13 +57,19 @@ class ParamsNode(Node):
 
     # Create a copy of frame to draw only persons
         detect_frame = frame.copy()
+        count=0
         for i in person_indices:
             box = detections.xyxy[i]  # bounding box: [x1, y1, x2, y2]
             x1, y1, x2, y2 = map(int, box)
             cv2.rectangle(detect_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(detect_frame, "Person", (x1, y1 - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            count+=1
         #annotated_frame = results[0].plot()
+
+        self.final_array[0] = count # Dummy Value
+
+        
         cv2.imshow("YOLO detections", detect_frame)
         cv2.waitKey(1)
 
@@ -75,9 +83,9 @@ class ParamsNode(Node):
         
 
 
-    '''def ParamsSound(self, msg: AudioData):
+    def ParamsSound(self, msg: Int32):
         # Fourier Analysis {add to final_array[3]}
-        self.final_array[3] = 32 # Dummy Value'''
+        self.final_array[3] = msg.data # Dummy Value
     
 
 
@@ -86,6 +94,36 @@ class ParamsNode(Node):
     '''def TempCallback(self, msg: Int32):
         # Add to final_array[0] only once coz Mother Drone only Maps once
         self.final_array[0] = 98 # Dummy Variable'''
+    
+    def structural_integrity(self, msg: CompressedImage):
+        np_arr = np.frombuffer(msg.data, np.uint8)
+        img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+        img_with_corners = img.copy()
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        gray = np.float32(gray)
+
+        dst = cv2.cornerHarris(gray, 2, 3, 0.04)
+        dst = cv2.dilate(dst, None)
+
+
+        threshold = 0.01 * dst.max()
+        corner_coords = np.argwhere(dst > threshold)
+        corner_count = len(corner_coords)
+
+        probability = corner_count / MAX_COUNT_FOR_PROBABILITY
+
+        msg1 =  np.clip(probability, 0.0, 1.0)
+        self.final_array[1] = msg1
+
+
+
+        
+
+
+
+
+
+
 
 
     # For Publishing Final Array
@@ -93,6 +131,8 @@ class ParamsNode(Node):
         msg = Int32MultiArray()
         msg.data = self.final_array
         self.publisher.publish(msg)'''
+    
+    
         
 
 
