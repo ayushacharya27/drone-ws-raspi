@@ -28,7 +28,7 @@ def generate_synthetic_dataset(num_nodes=10, num_features=5, output_dir="data"):
     df_features = pd.DataFrame(features, columns=feature_names)
     df_features.insert(0, 'gps', node_ids)
     
-    features_path = os.path.join(output_dir, "nodes_features.csv")
+    features_path = os.path.join(output_dir, "test_nodes_features.csv")
     df_features.to_csv(features_path, index=False)
     print(f"Node features saved to {features_path}")
 
@@ -66,7 +66,10 @@ def generate_synthetic_dataset(num_nodes=10, num_features=5, output_dir="data"):
     # Create a DataFrame with node IDs as index and columns
     df_adj = pd.DataFrame(adj_matrix, index=node_ids, columns=node_ids)
     
-    adj_path = os.path.join(output_dir, "adjacency.csv")
+    adj_path = os.path.join(output_dir, "test_adjacency.csv")
     df_adj.to_csv(adj_path)
     print(f"Adjacency matrix saved to {adj_path}")
     print("\nSynthetic dataset created successfully")
+
+if __name__ == "__main__":
+    generate_synthetic_dataset(num_nodes=5)
