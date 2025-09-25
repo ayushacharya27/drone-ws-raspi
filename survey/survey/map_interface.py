@@ -18,7 +18,7 @@ def export(output):
         for i in range(len(coord)):
             coord[i] = [coord[i][1], coord[i][0]]
         print (coord)
-        with open("details.json", "w") as file:
+        with open("/home/ayush/drone-ws-code/survey/survey/details.json", "w") as file:
             json.dump(coord, file)
     #    geojson = json.dumps(output["all_drawings"], indent=2)
 
@@ -75,5 +75,5 @@ with col1:
         unsafe_allow_html=True,)
 
 with col2:
-    if st.button("📥 Send"):
+    if st.button("Send"):
         export(output)

@@ -1,0 +1,4 @@
+MAVproxy
+pymavlink
+opencv
+

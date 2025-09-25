@@ -1,40 +1,70 @@
-# Drone Manual Setup
-We used MAVRos here to communicate with the Drone , by setting up our local computer and the edge compute on the same network through a VPN (**tailscale**).
+## Launch Files Actions
 
-## Steps to Setup Tailscale
-
-### On Edge Compute/Main PC
-
+### Imp Points After creating a launch file
+#### Step 1: Add the launch file in 
 ```bash
-curl -fsSL https://tailscale.com/install.sh | sh
+ros2_ws/<package_name>/launch
 ```
-#### To Login/Start the VPN
-Login with the same email ID which we used to login in the host computer
+#### Step 2: Add it to setup.py before building it
 ```bash
-sudo tailscale up
+data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', ['launch/master_launch.py']), <------ This Part
+    ],
 ```
-#### Turn Off the VPN
+#### Step 3: Build it and run
 ```bash
-sudo tailscale down
-```
-
-#### Adding Network config
-Now in the bash.rc file in both Edge/Ground Station PC, add these and source the bash rc immediately
-
-```bash
-export ROS_DOMAIN_ID=42
-export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ros2 launch <package name> <launch file name>.py
 ```
 
-Now Source it
+### For pymavlink_master (can add the survey file launch afterwards)
 ```bash
-source ~/.bashrc
+ros2 launch pymavlink_master master_launch.py
+```
+
+### For Swarm Node (Have to Check the Realsense if Copy paste works or not in Swarm Node )
+```bash
+ros2 launch swarm_node hover_launch.py
+```
+
+## UDEV Rules
+1. /dev/pixhawk
+2. /dev/webcam (Sony One, coz realsense dont need to have a specific number in code)
+
+## Making New Udev Rules
+How to Find Vendor and device ID
+```bash
+lsusb
+                         |     |
+                         |     |
+                        Ven  devid
+Bus 001 Device 004: ID  8086:0b07 Intel Corp. Intel RealSense D435i
+```
+```bash
+sudo nano /etc/udev/rules.d/99-<rule for whom>.rules
+```
+
+Paste this (Modify it)
+```bash
+KERNEL=="video*", ATTRS{idVendor}=="<device_vendor_id>", ATTRS{idProduct}=="<device_id>", SYMLINK+="<name_you_want>"
+```
+
+Apply it
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 ```
 
 
-## Manual Control
 
-### Run Joy Node in ROS2 PC
+## Run Realsense Node
 ```bash
-ros2 run joy joy_node
+cd ros2_ws
+. install/setup.bash
+ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true
 ```
+Now You can see the topics published
+
+

@@ -10,6 +10,7 @@ import math
 import geopy
 import geopy.distance
 import json
+import os
 
 # Define flight and camera parameters
 flight_altitude_m = 50.0  # in meters
@@ -98,6 +99,12 @@ class Survey(Node):
             self.future = self.cli.call_async(self.req)
             rclpy.spin_until_future_complete(self, self.future)
             return self.future.result()
+          
+    def survey_define(self):
+        path = r"/mnt/Storage/Hackathons/SIH/drone-ws-raspi/survey/survey/details.json"
+
+        with open(path, "r") as file:
+            self.survey_area = json.load(file)
 
     def node_at_least_distance(self):
         for i in range(len(self.survey_area)):
