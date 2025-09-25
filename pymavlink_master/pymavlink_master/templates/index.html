@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROS 2 Drone Dashboard</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f0f0; }
+        .card { background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px
+ 20px rgba(0,0,0,0.1); text-align: center; min-width: 300px; }
+        h1 { margin-top: 0; color: #333; }
+        #status { font-weight: bold; margin-bottom: 20px; }
+        .coords { font-size: 1.5em; margin: 10px 0; }
+        .label { font-size: 0.8em; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Drone Position</h1>
+        <div id="status">Connecting...</div>
+        <div class="coords"><span class="label">X:</span> <span id="x-coord">0.00</span> m</div>
+        <div class="coords"><span class="label">Y:</span> <span id="y-coord">0.00</span> m</div>
+        <div class="coords"><span class="label">Z:</span> <span id="z-coord">0.00</span> m</div>
+    </div>
+
+    <script>
+        // Use this if accessing via ngrok
+        // const socket = io("YOUR_NGROK_URL");
+
+        // Use this if accessing on the same local network
+        const socket = io();
+
+        const statusDiv = document.getElementById('status');
+        const xCoordSpan = document.getElementById('x-coord');
+        const yCoordSpan = document.getElementById('y-coord');
+        const zCoordSpan = document.getElementById('z-coord');
+
+        socket.on('connect', function() {
+            console.log("Connected to Flask-SocketIO server.");
+            statusDiv.textContent = "Status: Connected";
+            statusDiv.style.color = "green";
+        });
+        
+        socket.on('drone_data', function(jsonData) {
+            const data = JSON.parse(jsonData);
+            xCoordSpan.textContent = data.x.toFixed(2);
+            yCoordSpan.textContent = data.y.toFixed(2);
+            zCoordSpan.textContent = data.z.toFixed(2);
+        });
+        
+        socket.on('disconnect', function() {
+            console.log("Disconnected from server.");
+            statusDiv.textContent = "Status: Disconnected";
+            statusDiv.style.color = "red";
+        });
+    </script>
+</body>
+</html>

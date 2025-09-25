@@ -1,7 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Int32MultiArray, Float32MultiArray
+from std_msgs.msg import Int32MultiArray, Float32MultiArray, String
 from pymavlink import mavutil
+import json
+
+path = r"/tmp/drone_data.json"
 
 class PixhawkTelemetry(Node):
     def __init__(self, udp_port='udp:127.0.0.1:14551'):
@@ -11,6 +14,9 @@ class PixhawkTelemetry(Node):
         self.rc_pub = self.create_publisher(Int32MultiArray, 'rc_channels', 10)
         self.gps_pub = self.create_publisher(Float32MultiArray, 'gps', 10)   # [lat, lon, alt]
         self.yaw_pub = self.create_publisher(Float32MultiArray, 'imu_yaw', 10) # [yaw]
+        self.acc_pub = self.create_publisher(Float32MultiArray, 'imu_acc', 10) # [accx,accy,accz]
+
+        self.drone_data = self.create_publisher(String, 'drone_data', 10) # complete drone data
 
         # MAVLink connection
         self.master = mavutil.mavlink_connection(udp_port)
@@ -52,6 +58,22 @@ class PixhawkTelemetry(Node):
             yaw_deg = yaw * 180.0 / 3.14159265359
             self.yaw_pub.publish(Float32MultiArray(data=[yaw_deg]))
             self.get_logger().info(f"🧭 Yaw: {yaw_deg:.2f}°")
+
+        # IMU ACC
+        elif mtype == 'SCALED_IMU2':
+            accel = Float32MultiArray()
+            g = 9.80665  # Standard gravity
+            accel_x = msg.xacc * (g / 1000.0)
+            accel_y = msg.yacc * (g / 1000.0)
+            accel_z = msg.zacc * (g / 1000.0)
+            accel.data = [accel_x,accel_y,accel_z]
+            self.acc_pub.publish(accel)
+
+        data = [gps_data, accel]
+
+        with open(path,"w") as file:
+            json.dump(data, file)
+        
 
 
 def main(args=None):
