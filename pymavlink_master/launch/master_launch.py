@@ -12,16 +12,10 @@ def generate_launch_description():
                 '--out=udp:127.0.0.1:14550',
                 '--out=udp:127.0.0.1:14551',
                 '--out=udp:127.0.0.1:14552',
+		'--logfile=/tmp/mav.tlog',
                 ],
             output='screen'
         ),
-        ExecuteProcess(
-            cmd=[
-                'streamlit', 'run', '/home/ayush/drone-ws-code/survey/survey/map_interface.py'
-            ],
-            output='screen'
-        ),
-
 
         Node(
             package='pymavlink_master',

@@ -23,7 +23,8 @@ setup(
         'console_scripts': [
             'rgb_node = swarm_node.rgb_node:main',
             'view_image = swarm_node.frame_check:main',
-            'param_node = swarm_node.prerna_node:main'
+            'param_node = swarm_node.prerna_node:main',
+	    'sound_pub = swarm_node.sound_pub:main'
         ],
     },
 )
