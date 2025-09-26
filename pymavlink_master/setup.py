@@ -23,6 +23,7 @@ setup(
         'console_scripts': [
             'start_link = pymavlink_master.master:main',
             'telemetry_node = pymavlink_master.telemetry:main',
+            'json_writer = pymavlink_master.json_writer:main',
         ],
     },
 )
