@@ -17,21 +17,24 @@ class JsonWriterNode(Node):
         self.tel_sub = self.create_subscription(String,'tel_data',self.tel_callback,10) # QoS profile depth
         self.data = [0,0,0,0,0,0]
         self.get_logger().info("JSON writer node started, listening to /drone_position.")
+        self.json_data = {}
 
     def data_callback(self, msg):
         for i in msg.data:
             for j in range(4):
                 self.data[j+2] = msg.data
+        self.json_data['persons'] = self.data[2]
+        self.json_data['structural_integrity'] = self.data[3]
+        self.json_data['voices'] = self.data[5]
         with open(r"/tmp/drone_data.json") as file:
-            json.dump(self.data,file)
+            json.dump(self.json_data,file)
     
     def tel_callback(self, msg):
-        for i in msg.data:
-            for j in range(2):
-                self.data[j] = msg.data
+        self.json_data['lat'] = list(msg.data)[0][0]
+        self.json_data['lon'] = list(msg.data)[0][1]
         with open(r"/tmp/drone_data.json") as file:
-            json.dump(self.data,file)
-        return
+            json.dump(self.json_data,file)
+        
     
 def main(args=None):
     rclpy.init(args=args)

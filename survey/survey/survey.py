@@ -95,16 +95,10 @@ class Survey(Node):
     def survey_define(self, msg):
         self.survey_area = msg.data
 
-    def send_request(self):
+    '''    def send_request(self):
             self.future = self.cli.call_async(self.req)
             rclpy.spin_until_future_complete(self, self.future)
-            return self.future.result()
-          
-    def survey_define(self):
-        path = r"/home/sentry/drone-ws-raspi/survey/survey/details.json"
-
-        with open(path, "r") as file:
-            self.survey_area = json.load(file)
+            return self.future.result()'''
 
     def node_at_least_distance(self):
         for i in range(len(self.survey_area)):

@@ -41,4 +41,4 @@ if __name__ == '__main__':
     
     # Start the Flask-SocketIO server
     print("Starting Flask server to read from JSON file...")
-    socketio.run(app, host='0.0.0.0', port=8000)
+    socketio.run(app, host='0.0.0.0', port=8096)

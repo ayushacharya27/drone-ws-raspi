@@ -2,57 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ROS 2 Drone Dashboard</title>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <title>Drone Data Feed</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f0f0; }
-        .card { background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px
- 20px rgba(0,0,0,0.1); text-align: center; min-width: 300px; }
-        h1 { margin-top: 0; color: #333; }
-        #status { font-weight: bold; margin-bottom: 20px; }
-        .coords { font-size: 1.5em; margin: 10px 0; }
-        .label { font-size: 0.8em; color: #777; }
+        body { font-family: sans-serif; background-color: #282c34; color: white; }
+        pre { background-color: #21252b; padding: 1em; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Drone Position</h1>
-        <div id="status">Connecting...</div>
-        <div class="coords"><span class="label">X:</span> <span id="x-coord">0.00</span> m</div>
-        <div class="coords"><span class="label">Y:</span> <span id="y-coord">0.00</span> m</div>
-        <div class="coords"><span class="label">Z:</span> <span id="z-coord">0.00</span> m</div>
-    </div>
+    <h1>Live Drone Data 🛰️</h1>
+    <pre id="data-container">Connecting to server...</pre>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
 
     <script>
-        // Use this if accessing via ngrok
-        // const socket = io("YOUR_NGROK_URL");
+        // Connect to your Flask-SocketIO server
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
 
-        // Use this if accessing on the same local network
-        const socket = io();
+        const dataContainer = document.getElementById('data-container');
 
-        const statusDiv = document.getElementById('status');
-        const xCoordSpan = document.getElementById('x-coord');
-        const yCoordSpan = document.getElementById('y-coord');
-        const zCoordSpan = document.getElementById('z-coord');
+        socket.on('connect', () => {
+            console.log('Successfully connected to the server!');
+        });
 
-        socket.on('connect', function() {
-            console.log("Connected to Flask-SocketIO server.");
-            statusDiv.textContent = "Status: Connected";
-            statusDiv.style.color = "green";
+        // Listen for the 'drone_data' event from the server
+        socket.on('drone_data', (jsonDataString) => {
+            console.log('Received data:', jsonDataString);
+            
+            // The data arrives as a string, so we parse it into a JavaScript object
+            const data = JSON.parse(jsonDataString);
+            
+            // Display the formatted JSON in the <pre> tag
+            dataContainer.textContent = JSON.stringify(data, null, 2);
         });
-        
-        socket.on('drone_data', function(jsonData) {
-            const data = JSON.parse(jsonData);
-            xCoordSpan.textContent = data.x.toFixed(2);
-            yCoordSpan.textContent = data.y.toFixed(2);
-            zCoordSpan.textContent = data.z.toFixed(2);
-        });
-        
-        socket.on('disconnect', function() {
-            console.log("Disconnected from server.");
-            statusDiv.textContent = "Status: Disconnected";
-            statusDiv.style.color = "red";
-        });
+
     </script>
 </body>
 </html>
