@@ -16,7 +16,7 @@ class JsonWriterNode(Node):
         self.feature_sub = self.create_subscription(String,'drone_data',self.data_callback,10) # QoS profile depth
         self.tel_sub = self.create_subscription(String,'tel_data',self.tel_callback,10) # QoS profile depth
         self.data = [0,0,0,0,0,0]
-        self.get_logger().info("JSON writer node started, listening to /drone_position.")
+        self.get_logger().info("JSON writer node started, listening to /drone_data & tel_data.")
         self.json_data = {}
 
     def data_callback(self, msg):
